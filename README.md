@@ -27,8 +27,9 @@ A maneira mais simples de rodar o DOECA é utilizando containers. Isso garante q
     docker-compose up -d --build
     ```
     ou (depdendo da distribuiçãoe versão, talvez precise rodar com sudo)
-
+   ```bash
     docker compose up -d --build
+    ```
 
 3.  **Acesse o sistema:**
     * **Área Pública:** `http://localhost:8080`
