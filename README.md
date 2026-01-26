@@ -19,7 +19,7 @@ A maneira mais simples de rodar o DOECA é utilizando containers. Isso garante q
 1. **Clone o repositório:**
 
     ```bash
-    git clone [https://github.com/adrianolerner/doeca-docker.git](https://github.com/adrianolerner/doeca-docker.git)
+    git clone https://github.com/adrianolerner/doeca-docker.git
     cd doeca-docker
     ```
 
@@ -54,7 +54,7 @@ A maneira mais simples de rodar o DOECA é utilizando containers. Isso garante q
 
 4. **Suba o ambiente:**
 
-    Execute o comando abaixo na raiz do projeto. O Docker irá baixar as imagens, instalar o Composer e configurar o banco de dados automaticamente.
+    Execute o comando abaixo na raiz do projeto. O Docker irá baixar as imagens, instalar o Composer e configurar o banco de dados automaticamente. OBS.: Pode ou não ser necessário rodar os comandos abaixo com o uso do SUDO, verifique a configuração do seu ambiente.
 
     ```bash
     docker-compose up -d --build
