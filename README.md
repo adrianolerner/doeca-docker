@@ -21,7 +21,27 @@ A maneira mais simples de rodar o DOECA é utilizando containers. Isso garante q
     cd doeca-docker
     ```
 
-2.  **Suba o ambiente:**
+2. **⚙️ Configuração (Docker):**
+
+As configurações de banco de dados são gerenciadas diretamente no arquivo `docker-compose.yml` ou através de variáveis de ambiente. O sistema PHP detecta essas variáveis automaticamente.
+
+Caso precise alterar senhas ou portas, edite a seção `environment` no `docker-compose.yml`:
+
+    ```bash
+    nano docker-compose.yml
+    ````
+Altere as variáveis na seção do app e na seção do banco de dados com os mesmos dados.
+
+```yaml
+environment:
+  - DB_HOST=db_doeca
+  - DB_NAME=doeca_db
+  - DB_USER=doeca_user
+  - DB_PASS=sua_senha_segura
+
+```
+
+3.  **Suba o ambiente:**
     Execute o comando abaixo na raiz do projeto. O Docker irá baixar as imagens, instalar o Composer e configurar o banco de dados automaticamente.
     ```bash
     docker-compose up -d --build
@@ -32,25 +52,10 @@ A maneira mais simples de rodar o DOECA é utilizando containers. Isso garante q
     docker compose up -d --build
 ```
 
-3.  **Acesse o sistema:**
+4.  **Acesse o sistema:**
     * **Área Pública:** `http://localhost:8080`
     * **Painel Admin:** `http://localhost:8080/admin`
     * **Login Padrão:** `admin@municipio.gov.br` / `admin`
-
-### ⚙️ Configuração (Docker)
-
-As configurações de banco de dados são gerenciadas diretamente no arquivo `docker-compose.yml` ou através de variáveis de ambiente. O sistema PHP detecta essas variáveis automaticamente.
-
-Caso precise alterar senhas ou portas, edite a seção `environment` no `docker-compose.yml`:
-
-```yaml
-environment:
-  - DB_HOST=db_doeca
-  - DB_NAME=doeca_db
-  - DB_USER=doeca_user
-  - DB_PASS=sua_senha_segura
-
-```
 
 ---
 
