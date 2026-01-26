@@ -160,8 +160,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['pdf_file'])) {
                 </div>
 
                 <div class="mt-3 d-grid">
-                    <a href="../index.php" target="_blank" class="btn btn-outline-secondary">
+                    <a href="../index.php" target="_blank" class="btn btn-secondary">
                         <i class="fas fa-external-link-alt"></i> Ver Site Principal
+                    </a>
+                </div>
+                <div class="mt-3 d-grid">
+                    <a href="sobre.php" target="_blank" class="btn btn-outline-secondary">
+                        <i class="fas fa-external-link-alt"></i> Sobre o DOECA
                     </a>
                 </div>
             </div>
