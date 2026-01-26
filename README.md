@@ -18,7 +18,7 @@ A maneira mais simples de rodar o DOECA é utilizando containers. Isso garante q
 1.  **Clone o repositório:**
     ```bash
     git clone https://github.com/adrianolerner/doeca-docker.git
-    cd doeca
+    cd doeca-docker
     ```
 
 2.  **Suba o ambiente:**
