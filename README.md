@@ -19,45 +19,54 @@ A maneira mais simples de rodar o DOECA é utilizando containers. Isso garante q
 1. **Clone o repositório:**
 
     ```bash
-    git clone https://github.com/adrianolerner/doeca-docker.git
+    git clone [https://github.com/adrianolerner/doeca-docker.git](https://github.com/adrianolerner/doeca-docker.git)
     cd doeca-docker
     ```
 
 2. **⚙️ Configuração (Docker):**
 
-As configurações de banco de dados são gerenciadas diretamente no arquivo `docker-compose.yml` ou através de variáveis de ambiente. O sistema PHP detecta essas variáveis automaticamente.
+    As configurações de banco de dados são gerenciadas diretamente no arquivo `docker-compose.yml` ou através de variáveis de ambiente. O sistema PHP detecta essas variáveis automaticamente.
 
-Caso precise alterar senhas ou portas, edite a seção `environment` no `docker-compose.yml`:
+    Caso precise alterar senhas ou portas, edite a seção `environment` no `docker-compose.yml`:
 
-```bash
-nano docker-compose.yml
-````
+    ```bash
+    nano docker-compose.yml
+    ```
 
-Altere as variáveis na seção do app e na seção do banco de dados com os mesmos dados.
+    Altere as variáveis na seção do **app** e na seção do **banco de dados** (db_doeca) garantindo que sejam iguais:
 
-```yaml
-environment:
-  - DB_HOST=db_doeca
-  - DB_NAME=doeca_db
-  - DB_USER=doeca_user
-  - DB_PASS=sua_senha_segura
+    ```yaml
+    environment:
+      - DB_HOST=db_doeca
+      - DB_NAME=doeca_db
+      - DB_USER=doeca_user
+      - DB_PASS=sua_senha_segura
+    ```
 
-```
+3. **Ajuste de permissão das pastas montadas:**
 
-3. **Suba o ambiente:**
+    Execute os comandos abaixo para garantir que o container consiga gravar os arquivos nas pastas mapeadas:
+
+    ```bash
+    sudo chmod 777 uploads/
+    sudo chmod 777 importacao/
+    ```
+
+4. **Suba o ambiente:**
+
     Execute o comando abaixo na raiz do projeto. O Docker irá baixar as imagens, instalar o Composer e configurar o banco de dados automaticamente.
 
     ```bash
     docker-compose up -d --build
     ```
 
-    ou (depdendo da distribuiçãoe versão, talvez precise rodar com sudo)
+    *Nota: Dependendo da sua distribuição Linux e versão do Docker, o comando pode ser sem o hífen:*
 
-```bash
+    ```bash
     docker compose up -d --build
-```
+    ```
 
-4. **Acesse o sistema:**
+5. **Acesse o sistema:**
     * **Área Pública:** `http://localhost:8080`
     * **Painel Admin:** `http://localhost:8080/admin`
     * **Login Padrão:** `admin@municipio.gov.br` / `admin`
@@ -69,10 +78,9 @@ environment:
 Esta versão traz ferramentas essenciais para a implantação do sistema em órgãos que já possuem um histórico de publicações:
 
 * **📦 Central de Migração (Importação em Lote):** Três novas ferramentas para carregar acervos antigos (legado):
-* **Via CSV:** Importação estruturada usando planilha de dados.
-* **Automática:** Reconhecimento baseado no nome do arquivo (`AAAA-MM-DD__EDICAO.pdf`).
-* **Inteligente (OCR):** O sistema lê o cabeçalho dos PDFs para identificar a Data e o Número da Edição automaticamente, mesmo em arquivos com nomes aleatórios.
-
+    * **Via CSV:** Importação estruturada usando planilha de dados.
+    * **Automática:** Reconhecimento baseado no nome do arquivo (ex: `AAAA-MM-DD__EDICAO.pdf`).
+    * **Inteligente (OCR):** O sistema lê o cabeçalho dos PDFs para identificar a Data e o Número da Edição automaticamente, mesmo em arquivos com nomes aleatórios.
 * **🔄 Backup e Portabilidade:** Módulo de exportação que gera um arquivo `.ZIP` com todo o acervo. O sistema renomeia os arquivos para um padrão legível e gera um índice CSV automaticamente, facilitando migrações futuras.
 * **🔍 Busca Full-Text (OCR/Extração):** O sistema lê automaticamente o texto dos PDFs no upload, permitindo buscas precisas dentro do conteúdo.
 
@@ -80,8 +88,10 @@ Esta versão traz ferramentas essenciais para a implantação do sistema em órg
 
 ## 🛠️ Instalação Manual (Legado / cPanel)
 
-Se você não pode usar Docker e precisa instalar em um servidor tradicional (XAMPP, Apache, cPanel), siga os passos em:
-htps://github.com/adrianolerner/doeca/
+Se você não pode usar Docker e precisa instalar em um servidor tradicional (XAMPP, Apache, cPanel), siga os passos no repositório original:
+[https://github.com/adrianolerner/doeca/](https://github.com/adrianolerner/doeca/)
+
+---
 
 ## 📂 Estrutura de Arquivos
 
