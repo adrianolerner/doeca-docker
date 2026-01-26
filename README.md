@@ -30,7 +30,7 @@ A maneira mais simples de rodar o DOECA é utilizando containers. Isso garante q
    
 ```bash
     docker compose up -d --build
-    ```
+```
 
 3.  **Acesse o sistema:**
     * **Área Pública:** `http://localhost:8080`
