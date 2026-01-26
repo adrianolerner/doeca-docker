@@ -27,9 +27,9 @@ As configurações de banco de dados são gerenciadas diretamente no arquivo `do
 
 Caso precise alterar senhas ou portas, edite a seção `environment` no `docker-compose.yml`:
 
-    ```bash
-    nano docker-compose.yml
-    ````
+```bash
+nano docker-compose.yml
+````
 Altere as variáveis na seção do app e na seção do banco de dados com os mesmos dados.
 
 ```yaml
