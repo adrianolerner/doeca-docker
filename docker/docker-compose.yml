@@ -1,0 +1,46 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    container_name: doeca_app
+    ports:
+      - "8080:80"
+    volumes:
+      - ./src:/var/www/html
+      - ./uploads:/var/www/html/uploads
+      - ./importacao:/var/www/html/importacao
+ 
+    environment:
+      - DB_HOST=db_doeca
+      - DB_NAME=doeca_db
+      - DB_USER=doeca_user
+      - DB_PASS=senha_secreta
+
+    depends_on:
+      - db_doeca
+    networks:
+      - doeca_net
+
+    # Serviço do Banco de Dados (MySQL)
+  db_doeca:
+    image: mysql:8.0
+    container_name: doeca_db
+    restart: always
+    environment:
+      MYSQL_DATABASE: doeca_db
+      MYSQL_USER: doeca_user
+      MYSQL_PASSWORD: senha_secreta
+      MYSQL_ROOT_PASSWORD: senha_root_secreta
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./docker/init_db:/docker-entrypoint-initdb.d
+    networks:
+      - doeca_net
+
+networks:
+  doeca_net:
+    driver: bridge
+
+volumes:
+  db_data:
