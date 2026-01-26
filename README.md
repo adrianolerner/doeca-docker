@@ -1,15 +1,3 @@
-Aqui está a versão atualizada do `README.md`.
-
-Fiz as seguintes alterações estratégicas:
-
-1. **Prioridade ao Docker:** Coloquei a instalação via Docker no topo, pois agora é o método padrão.
-2. **Variáveis de Ambiente:** Adicionei uma seção explicando como configurar o `.env` (ou ajustar o `docker-compose.yml`).
-3. **Instalação Manual:** Mantive a instalação antiga como "Método Legado/Manual" para quem for usar em hospedagem compartilhada (cPanel), mas atualizei a instrução do `config.php`.
-4. **Estrutura:** Atualizei a árvore de arquivos.
-
-Pode copiar o código abaixo:
-
-```markdown
 # 🏛️ DOECA - Diário Oficial Eletrônico de Código Aberto
 
 > Sistema simples, leve e eficiente para gerenciamento e publicação de Diários Oficiais municipais.
