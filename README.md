@@ -16,7 +16,7 @@ A maneira mais simples de rodar o DOECA é utilizando containers. Isso garante q
 
 ### Passo a Passo
 
-Você pode testar a utilização da imagem pronta, mas ela ainda está em testes, verifique o funcionamento antes de colocar em produção, você pode testar usando os passo em: https://hub.docker.com/r/albiesek/doeca
+* Você pode testar a utilização da imagem pronta, mas ela ainda está em testes, verifique o funcionamento antes de colocar em produção, você pode testar usando os passo em: https://hub.docker.com/r/albiesek/doeca (método mais simples)
 
 Caso não funcione, siga com o processo de build local do docker abaixo.
 
