@@ -1,4 +1,5 @@
 /src/uploads/**/
+/src/importacao/**/
 /src/vendor/
 .env
 .DS_Store

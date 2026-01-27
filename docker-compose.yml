@@ -1,39 +1,41 @@
 services:
   app:
+    # Para buid local manter o bloco abaixo
     build:
       context: .
       dockerfile: docker/Dockerfile
+    # Para usar a imagem direto do dockerhub, remover o bloco acima e descomentar o bloco abaixo
+    #image: albiesek/doeca:latest
     container_name: doeca_app
+    restart: always
     ports:
       - "8080:80"
-    volumes:
-      - ./uploads:/var/www/html/uploads
-      - ./importacao:/var/www/html/importacao
- 
     environment:
       - DB_HOST=db_doeca
       - DB_NAME=doeca_db
-      - DB_USER=doeca_user
-      - DB_PASS=senha_secreta
-
+      - DB_USER=admin
+      - DB_PASS=admin
     depends_on:
       - db_doeca
     networks:
       - doeca_net
+    # Volumes apenas para persistência de dados (uploads), não código
+    volumes:
+      - doeca_uploads:/var/www/html/uploads
+      - ./importacao:/var/www/html/importacao
 
-    # Serviço do Banco de Dados (MySQL)
   db_doeca:
     image: mysql:8.0
     container_name: doeca_db
     restart: always
     environment:
       MYSQL_DATABASE: doeca_db
-      MYSQL_USER: doeca_user
-      MYSQL_PASSWORD: senha_secreta
-      MYSQL_ROOT_PASSWORD: senha_root_secreta
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
+      MYSQL_ROOT_PASSWORD: admin123
+    # Removemos o volume do init.sql. O PHP fará o trabalho.
     volumes:
       - db_data:/var/lib/mysql
-      - ./docker/init_db:/docker-entrypoint-initdb.d
     networks:
       - doeca_net
 
@@ -43,3 +45,4 @@ networks:
 
 volumes:
   db_data:
+  doeca_uploads:

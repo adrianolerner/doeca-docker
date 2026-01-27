@@ -13,6 +13,7 @@ RUN apt-get update && apt-get install -y \
 
 # 2. Habilitar o mod_rewrite do Apache (geralmente útil para sistemas PHP)
 RUN a2enmod rewrite
+COPY docker/php.ini /usr/local/etc/php/conf.d/custom.ini
 
 # 3. Instalar o Composer dentro do container
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
