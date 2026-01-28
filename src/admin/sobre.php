@@ -4,7 +4,7 @@ verificarAdmin(); // Proteção: Apenas admin vê essa tela
 
 // 1. Configurações de Versão
 function getCurrentVersion() {
-    return '0.5.1';
+    return '0.5.2';
 }
 
 // 2. Verifica a última versão no GitHub
