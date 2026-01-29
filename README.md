@@ -23,6 +23,7 @@ A maneira mais simples de rodar o DOECA é utilizando containers. Isso garante q
 1. **Crie uma pasta chamada doeca em seu servidor:**
 
 2. **Dentro da pasta crie o arquivo docker-compose.yml e cole o conteudo abaixo modificando os dados de acesso ao banco de dados:**
+   OBS.: Caso queira fazer a build do container localmente, você pode clonar este respositório localmente com o comando `git clone https://github.com/adrianolerner/doeca.git` e então, editar o arquivo `docker-compose.yml` padrão do repositório modificando o usuário e senha do banco de dados dentro da raiz do repositório ir para o passo 4 e 5.
 
     ```bash
     nano docker-compose.yml
@@ -79,7 +80,7 @@ A maneira mais simples de rodar o DOECA é utilizando containers. Isso garante q
         doeca_uploads:
     ```
 
-3. **Ajuste de permissão das pastas montadas:**
+4. **Ajuste de permissão das pastas montadas:**
 
     Execute os comandos abaixo para garantir que o container consiga gravar os arquivos nas pastas mapeadas:
     Caso não montar a pasta uploads localmente não é necessário dar permissão na pasta uploads.
@@ -89,7 +90,7 @@ A maneira mais simples de rodar o DOECA é utilizando containers. Isso garante q
     sudo chmod 775 importacao/
     ```
 
-4. **Suba o ambiente:**
+5. **Suba o ambiente:**
 
     Execute o comando abaixo na raiz do projeto. O Docker irá baixar as imagens, instalar o Composer e configurar o banco de dados automaticamente. OBS.: Pode ou não ser necessário rodar os comandos abaixo com o uso do SUDO, verifique a configuração do seu ambiente.
 
@@ -103,7 +104,7 @@ A maneira mais simples de rodar o DOECA é utilizando containers. Isso garante q
     docker compose up -d
     ```
 
-5. **Acesse o sistema:**
+6. **Acesse o sistema:**
     ***Área Pública:** `http://localhost:8080`
     * **Painel Admin:** `http://localhost:8080/admin`
     * **Login Padrão:** `admin@municipio.gov.br` / `admin`
