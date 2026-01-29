@@ -1,3 +1,0 @@
-# Bloqueia acesso direto a qualquer arquivo nesta pasta
-Order Deny,Allow
-Deny from all
