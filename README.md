@@ -43,6 +43,8 @@ A maneira mais simples de rodar o DOECA é utilizando containers. Isso garante q
                 - DB_NAME=doeca_db
                 - DB_USER=admin
                 - DB_PASS=admin
+                - CF_SITE_KEY=SUA_SITE_KEY_AQUI
+                - CF_SECRET_KEY=SUA_SECRET_KEY_AQUI
             depends_on:
                 - db_doeca
             networks:
