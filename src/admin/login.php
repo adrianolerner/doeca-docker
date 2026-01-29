@@ -1,16 +1,12 @@
 <?php
-// admin/login.php
+// admin/login.php - Versão 0.6
 session_start();
-require '../config.php';
+require '../config.php'; // As chaves CLOUDFLARE_... vêm daqui agora!
 require 'logger.php';
 
-// --- CONFIGURAÇÕES DE SEGURANÇA ---
-define('CLOUDFLARE_SITE_KEY', 'SEU_SITE_KEY_AQUI');
-define('CLOUDFLARE_SECRET_KEY', 'SEU_SECRET_KEY_AQUI');
-
-// Rate Limit
+// Configurações de Rate Limit
 $max_tentativas = 5; 
-$tempo_bloqueio = 15; 
+$tempo_bloqueio = 15; // Minutos
 
 // --- FUNÇÃO DE BYPASS PARA DEV ---
 function isLocalhost() {
@@ -29,6 +25,12 @@ function verificarTurnstile($token) {
     // Se for localhost, BYPASS automático
     if (isLocalhost()) {
         return true; 
+    }
+
+    // Se a chave não estiver configurada no config.php, falha ou bypass (opcional)
+    // Aqui assumimos que em produção a chave existe.
+    if (!defined('CLOUDFLARE_SECRET_KEY') || empty(CLOUDFLARE_SECRET_KEY)) {
+        return false; // Erro de configuração
     }
 
     $url = "https://challenges.cloudflare.com/turnstile/v0/siteverify";
@@ -53,25 +55,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     $ip = $_SERVER['REMOTE_ADDR'];
 
-    // 1. VERIFICA RATE LIMIT
+    // 1. VERIFICA RATE LIMIT (Limpeza e Contagem)
+    // Remove tentativas antigas expiradas
     $stmt = $pdo->prepare("DELETE FROM login_tentativas WHERE tentativa_em < (NOW() - INTERVAL ? MINUTE)");
     $stmt->execute([$tempo_bloqueio]);
 
+    // Conta tentativas válidas recentes
     $stmt = $pdo->prepare("SELECT COUNT(*) FROM login_tentativas WHERE ip_address = ?");
     $stmt->execute([$ip]);
     $tentativas_atuais = $stmt->fetchColumn();
 
+    // Se excedeu o limite e NÃO é localhost, bloqueia
     if ($tentativas_atuais >= $max_tentativas && !isLocalhost()) { 
-        // Nota: Você pode permitir bypass de rate limit em localhost se quiser removendo o !isLocalhost acima
         $erro = "Muitas tentativas falhas. Bloqueado por $tempo_bloqueio minutos.";
-        registrarLog($pdo, 'Segurança', 'Bloqueio de IP', "IP $ip excedeu tentativas.");
+        registrarLog($pdo, 'Segurança', 'Bloqueio de IP', "IP $ip excedeu tentativas de login.");
     } else {
         
-        // 2. VERIFICA CAPTCHA (Com Bypass interno na função)
+        // 2. VERIFICA CAPTCHA
         $tokenCaptcha = $_POST['cf-turnstile-response'] ?? '';
         
         if (!verificarTurnstile($tokenCaptcha)) {
-            $erro = "Falha no Captcha. Tente novamente.";
+            $erro = "Falha na verificação de segurança (Captcha). Tente novamente.";
         } else {
             // 3. VERIFICA CREDENCIAIS
             $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
@@ -82,6 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
 
             if ($usuario && password_verify($senha, $usuario['senha'])) {
+                // SUCESSO: Limpa o histórico de erros desse IP
                 $stmt = $pdo->prepare("DELETE FROM login_tentativas WHERE ip_address = ?");
                 $stmt->execute([$ip]);
 
@@ -89,16 +94,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $_SESSION['usuario_nome'] = $usuario['nome'];
                 $_SESSION['usuario_nivel'] = $usuario['nivel'];
                 
-                registrarLog($pdo, 'Login', "Painel Admin", "Sucesso via " . (isLocalhost() ? "Localhost" : "Web"));
+                $origem = isLocalhost() ? "Localhost (Dev)" : "Web";
+                registrarLog($pdo, 'Login', "Painel Admin", "Acesso realizado com sucesso ($origem)");
 
                 header("Location: index.php");
                 exit;
             } else {
+                // FALHA: Registra tentativa
                 $stmt = $pdo->prepare("INSERT INTO login_tentativas (ip_address) VALUES (?)");
                 $stmt->execute([$ip]);
                 
                 $erro = "E-mail ou senha incorretos.";
-                registrarLog($pdo, 'Login Falho', "Tentativa Inválida", "User: $email");
+                registrarLog($pdo, 'Login Falho', "Tentativa Inválida", "User: $email | IP: $ip");
             }
         }
     }
@@ -151,7 +158,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <i class="fas fa-bug"></i> Modo Local: <b>Captcha Ignorado</b>
                     </div>
                 <?php else: ?>
-                    <div class="cf-turnstile" data-sitekey="<?php echo CLOUDFLARE_SITE_KEY; ?>" data-language="pt-br"></div>
+                    <div class="cf-turnstile" data-sitekey="<?php echo defined('CLOUDFLARE_SITE_KEY') ? CLOUDFLARE_SITE_KEY : ''; ?>" data-language="pt-br"></div>
                 <?php endif; ?>
 
                 <button type="submit" class="btn btn-primary w-100 py-2">
