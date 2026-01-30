@@ -1,7 +1,3 @@
-Este é um repositório ainda em testes, contém a imagem pronta para implantação do sistema DOECA, disponível em: <https://github.com/adrianolerner/doeca-docker>
-
-_______________________________________________________________________________________________
-
 # 🏛️ DOECA - Diário Oficial Eletrônico de Código Aberto
 
 > Sistema simples, leve e eficiente para gerenciamento e publicação de Diários Oficiais municipais.
@@ -23,7 +19,7 @@ A maneira mais simples de rodar o DOECA é utilizando containers. Isso garante q
 1. **Crie uma pasta chamada doeca em seu servidor:**
 
 2. **Dentro da pasta crie o arquivo docker-compose.yml e cole o conteudo abaixo modificando os dados de acesso ao banco de dados:**
-   OBS.: Caso queira fazer a build do container localmente, você pode clonar este respositório localmente com o comando `git clone https://github.com/adrianolerner/doeca.git` e então, editar o arquivo `docker-compose.yml` padrão do repositório modificando o usuário e senha do banco de dados dentro da raiz do repositório ir para o passo 4 e 5.
+   OBS.: Caso queira fazer a build do container localmente, você pode clonar este respositório localmente com o comando `git clone https://github.com/adrianolerner/doeca.git` e então, editar o arquivo `docker-compose.yml` padrão do repositório modificando o usuário e senha do banco de dados, e as chaves do Cloudflare Turnstile dentro da raiz do repositório ir para o passo 4 e 5.
 
     ```bash
     nano docker-compose.yml
@@ -110,6 +106,10 @@ A maneira mais simples de rodar o DOECA é utilizando containers. Isso garante q
     ***Área Pública:** `http://localhost:8080`
     * **Painel Admin:** `http://localhost:8080/admin`
     * **Login Padrão:** `admin@municipio.gov.br` / `admin`
+
+---
+
+OBS.: O sistema de login usa o captcha do Cloudflare, o Turnstile, é necessário configurar o mesmo no arquivo docker-compose.yml, você pode criar uma conta gratuita e usar em até 10 sites sem custos. Lembrando que para funcionar é necesssário ter um domínio válido e estar corretamente apontado para este container, caso contrário, será impossibilitado de fazer login.
 
 ---
 
